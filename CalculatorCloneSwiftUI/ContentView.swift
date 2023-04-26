@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var displayNumber: Int = 0
+    @State var displayNumber: String = "0"
     @State var tempNumber: Int = 0
     @State var operatorType: ButtonType = .clear
     @State var isEditing: Bool = false
@@ -55,54 +55,49 @@ struct ContentView: View {
     func handleButton(item: ButtonType) {
         if isEditing == false {
             if item == .clear {
-                displayNumber = 0
-                tempNumber = 0
+                displayNumber = "0"
             } else {
-                displayNumber = Int(item.displayName) ?? 0
+                displayNumber = item.displayName
                 isEditing = true
             }
         } else {
             if item == .clear {
-                displayNumber = 0
+                displayNumber = "0"
                 tempNumber = 0
                 isEditing = false
-            } else if item == .plusMinus {
-                displayNumber *= -1
-            } else if item == .percent {
-                displayNumber /= 100
             } else if item == .plus {
                 operatorType = .plus
-                tempNumber = displayNumber
+                tempNumber = Int(displayNumber) ?? 0
                 isEditing = false
             } else if item == .minus {
                 operatorType = .minus
-                tempNumber = displayNumber
+                tempNumber = Int(displayNumber) ?? 0
                 isEditing = false
             } else if item == .multiple {
                 operatorType = .multiple
-                tempNumber = displayNumber
+                tempNumber = Int(displayNumber) ?? 0
                 isEditing = false
             } else if item == .devide {
                 operatorType = .devide
-                tempNumber = displayNumber
+                tempNumber = Int(displayNumber) ?? 0
                 isEditing = false
             } else if item == .equal {
                 if operatorType == .plus {
-                    displayNumber = (tempNumber + displayNumber)
+                    displayNumber = String(tempNumber + (Int(displayNumber) ?? 0))
                 } else if operatorType == .minus {
-                    displayNumber = (tempNumber - displayNumber)
+                    displayNumber = String(tempNumber - (Int(displayNumber) ?? 0))
                 } else if operatorType == .multiple {
-                    displayNumber = (tempNumber * displayNumber)
+                    displayNumber = String(tempNumber * (Int(displayNumber) ?? 0))
                 } else if operatorType == .devide {
-                    if displayNumber == 0 {
+                    if displayNumber == "0" {
                         // 에러 방지
-                        displayNumber = 0
+                        displayNumber = "0"
                     } else {
-                        displayNumber = tempNumber / displayNumber
+                        displayNumber = String(tempNumber / (Int(displayNumber) ?? 0))
                     }
                 }
             } else {
-                displayNumber += Int(item.displayName) ?? 0
+                displayNumber += item.displayName
             }
         }
     }
